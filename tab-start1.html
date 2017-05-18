@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />-->
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <style>
+		html,body {
+			background-color: #efeff4;
+		}
+		.title{
+			margin: 20px 15px 10px;
+			color: #6d6d72;
+			font-size: 15px;
+		}
+		.mui-slider img{
+			height: 150px; 
+		}
+		#OA_task_1{
+			margin-top: 10px;
+			height: 40px;
+		}
+		.btn{
+			height: 40px;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="mui-content">
+
+	    <div class="mui-slider">
+			  <div class="mui-slider-group mui-slider-loop">
+			    <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/yuantiao.jpg" /></a></div>
+			    <div class="mui-slider-item"><a href="#"><img src="images/cbd.jpg" /></a></div>
+			    <div class="mui-slider-item"><a href="#"><img src="images/muwu.jpg" /></a></div>
+			    <div class="mui-slider-item"><a href="#"><img src="images/shuijiao.jpg" /></a></div>
+			    <div class="mui-slider-item"><a href="#"><img src="images/yuantiao.jpg" /></a></div>
+			  	<div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/cbd.jpg" /></a></div>
+			  </div>
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+	    </div> 
+	    
+	    
+	    <ul id="OA_task_1"  class="mui-table-view mui-table-view">
+		    <li id='cbd' class="mui-table-view-cell mui-media mui-table-view-cell">
+		        <a href="javascript:;">
+		        	<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+		            <div class="mui-media-body mui-slider-handle">
+		               
+		            </div>
+		        </a>
+		    </li>
+		</ul>
+		<!---->
+		<button type="button" class="btn mui-btn mui-btn-block mui-btn-primary">学习更多</button>
+	</div>
+	
+	<script>
+		//自动轮播
+		(function ($){
+			//获得slider插件对象
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+			  interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+			});
+		})(mui) 
+		
+		//左删除
+		mui.init();
+			(function($) {
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+				$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', 'Hello MUI', btnArray, function(e) {
+						if (e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				var btnArray = ['确认', '取消'];
+				
+				//按钮
+				 mui(document.body).on('tap', '.mui-btn', function(e) {
+		            mui(this).button('loading');
+		            setTimeout(function() {
+		                mui(this).button('reset');
+		            }.bind(this), 2000);
+		            mui.openWindow({
+		            	url:"html/start-two.html",
+		            	id:'start-two'
+		            })
+		        });
+			})(mui);
+			
+			 
+//			(function ($){
+//				document.getElementById('felicity').addEventListener('tap',function (){
+//					$.openWindow({
+//						url:'tab-start.html',
+//						id:'tab-start'
+//					})
+//				})
+//				
+//			})(mui)
+	</script>
+</body>
+</html>

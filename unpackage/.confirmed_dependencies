@@ -1,0 +1,180 @@
+{
+	"index.html": {
+		"resources": [
+			"tab-index.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"tab-index.html",
+			"tab-my.html",
+			"tab-more.html",
+			"tab-start.html",
+			"guide.html",
+			"index1.html",
+			"main.html",
+			"html/feedback.html",
+			"tab-start1.html"
+		]
+	},
+	"tab-my.html": {
+		"resources": [
+			"images/xiong.jpg",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"html/barcode.html",
+			"html/erwei.html"
+		]
+	},
+	"tab-index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"css/Mycss.css"
+		],
+		"refer": [
+			"html/content.html"
+		]
+	},
+	"index1.html": {
+		"resources": [
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"tab-index.html",
+			"tab-my.html",
+			"tab-more.html",
+			"tab-start.html"
+		]
+	},
+	"guide.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"main.html"
+		]
+	},
+	"main.html": {
+		"resources": [
+			"tab-index.html",
+			"fonts/mui.ttf",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"tab-index.html",
+			"tab-my.html",
+			"tab-more.html",
+			"tab-start.html",
+			"html/feedback.html"
+		]
+	},
+	"html/feedback.html": {
+		"resources": [
+			"css/feedback.css",
+			"fonts/mui.ttf",
+			"js/feedback.js",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/barcode.html": {
+		"resources": [
+			"images/barcode.png",
+			"js/common.js",
+			"css/common.css",
+			"js/immersed.js",
+			"js/mui.min.js"
+		]
+	},
+	"html/erwei.html": {
+		"resources": [
+			"images/barcode.png",
+			"js/common.js",
+			"css/common.css",
+			"js/mui.min.js",
+			"js/immersed.js"
+		]
+	},
+	"html/content.html": {
+		"resources": [
+			"css/Mycss.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"tab-more.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/mui.pullToRefresh.js",
+			"js/mui.pullToRefresh.material.js"
+		],
+		"refer": [
+			"html/more-node.html"
+		]
+	},
+	"tab-start.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf",
+			"css/app.css",
+			"css/Mycss.css"
+		],
+		"refer": [
+			"html/start-node.html"
+		]
+	},
+	"html/more-node.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"css/Mycss.css",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/start-node.html": {
+		"resources": [
+			"css/Mycss.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"tab-start1.html": {
+		"resources": [
+			"images/cbd.jpg",
+			"images/muwu.jpg",
+			"images/yuantiao.jpg",
+			"images/shuijiao.jpg",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"tab-start.html",
+			"html/start-two.html"
+		]
+	},
+	"html/start-two.html": {
+		"resources": [
+			"css/Mycss.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"html/start-node.html"
+		]
+	}
+}

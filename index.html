@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <style>
+    	#head{
+    		background:#57BACD;
+    	}
+    	#title{
+    		color: #FFFFFF;
+    	}
+    	#feed{
+    		color: #800000;
+    	}
+    </style>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <header id="head" class="mui-bar mui-bar-nav">
+    	<span id="feed" class="mui-icon mui-icon-compose mui-pull-right"></span>
+        <h1 id='title' class="mui-title">文章摘要</h1>
+    </header>
+   
+   <nav class="mui-bar mui-bar-tab">
+       <a class="mui-tab-item mui-active" href="tab-index.html">
+           <span class="mui-icon mui-icon-bars"></span>
+           <span class="mui-tab-label">文章摘要</span>
+       </a>
+       <a class="mui-tab-item" href="tab-start1.html">
+           <span class="mui-icon mui-icon-paperplane"></span>
+           <span class="mui-tab-label">从零开始</span>
+       </a>
+       <a class="mui-tab-item" href="tab-more.html">
+           <span class="mui-icon mui-icon-chatboxes"></span>
+           <span class="mui-tab-label">面试集锦</span>
+       </a>
+       <a class="mui-tab-item" href="tab-my.html">
+           <span class="mui-icon mui-icon-gear"></span>
+           <span class="mui-tab-label">个人设置</span>
+       </a>
+   </nav>
+    
+</head>
+<body>
+	<script type="text/javascript" charset="utf-8">
+
+		var subpages = ['tab-index.html', 'tab-start1.html', 'tab-more.html', 'tab-my.html'];
+		var subpage_style = {
+			top: '45px',
+			bottom: '51px'
+		};
+		 
+		var aniShow = {};
+		
+		 //创建子页面，首个选项卡页面显示，其它均隐藏； 
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			for (var i = 0; i < 4; i++) {
+				var temp = {};
+				var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
+				if (i > 0) {
+					sub.hide();
+				}else{
+					temp[subpages[i]] = "true";
+					mui.extend(aniShow,temp);
+				}
+				self.append(sub);
+			}
+		});
+		 //当前激活选项
+		var activeTab = subpages[0];
+		var title = document.getElementById("title");
+		 //选项卡点击事件
+		mui('.mui-bar-tab').on('tap', 'a', function(e) {
+			var targetTab = this.getAttribute('href');
+			if (targetTab == activeTab) {
+				return;
+			}
+			//更换标题
+			title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+			//显示目标选项卡
+			//若为iOS平台或非首次显示，则直接显示
+			if(mui.os.ios||aniShow[targetTab]){
+				plus.webview.show(targetTab);
+			}else{
+				//否则，使用fade-in动画，且保存变量
+				var temp = {};
+				temp[targetTab] = "true";
+				mui.extend(aniShow,temp);
+				plus.webview.show(targetTab,"fade-in",300);
+			}
+			//隐藏当前;
+			plus.webview.hide(activeTab);
+			//更改当前活跃的选项卡
+			activeTab = targetTab;
+		});
+		
+		//导航栏意见反馈
+		(function ($){
+			document.getElementById('feed').addEventListener('tap',function (){
+				$.openWindow({
+					url:"html/feedback.html",
+					id:"feedback.html"
+				})
+			})
+		})(mui)
+	 
+	 	//初始化，并预加载webview模式的选项卡			
+		function preload() {
+
+			var menu_style = {
+				left: "-70%",
+				width: '70%',
+				popGesture: "none",
+				render:"always"
+			};
+
+			if(mui.os.ios) {
+				menu_style.zindex = -1;
+			}
+		}
+		mui.plusReady(function() {
+			//读取本地存储，检查是否为首次启动
+			var showGuide = plus.storage.getItem("lauchFlag");
+			//仅支持竖屏显示
+			plus.screen.lockOrientation("portrait-primary");
+			if(showGuide) {
+				//有值，说明已经显示过了，无需显示；
+				//关闭splash页面；
+				plus.navigator.closeSplashscreen();
+				plus.navigator.setFullscreen(false);
+				//预加载
+				preload();
+			} else {
+				//显示启动导航
+				mui.openWindow({
+					id: 'guide',
+					url: 'guide.html',
+					styles: {
+						popGesture: "none"
+					},
+					show: {
+						aniShow: 'none'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+				//延迟的原因：优先打开启动导航页面，避免资源争夺
+				setTimeout(function() {
+					//预加载
+					preload();
+				}, 200);
+			}
+		});
+		 
+		</script>
+</body>
+</html>

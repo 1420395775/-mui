@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+	<link href="css/Mycss.css" rel="stylesheet"/>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <style>
+    	input[type=search]{
+    		background: none;
+    		border-bottom:1px solid #E1673E;
+    		border-radius: 0;
+    	}
+    	.mui-search .mui-placeholder .mui-icon{
+    		color:#E1673E;
+    	}
+    </style>
+</head>
+<body> 
+    <div class="mui-content ">
+	    <div class="mui-input-row mui-search">
+			<input type="search" class="mui-input-clear inp" placeholder="搜搜">
+		</div>
+		<div id='box'>
+			<!--<ul class="mui-table-view">
+				<li class="mui-table-view-cel" >
+					<div class="mui-card-header" style="height:50px;margin-bottom:50px;">1</div>
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">1</p>
+						<p>1</p>
+					</div>
+					<div class="mui-card-footer">
+						<a class="mui-card-link">Like</a>
+						<a class="mui-card-link">Read more</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table-view" id='titleLi'>
+				<li class="mui-table-view-cel" style="margin-bottom:50px;">
+					<div class="mui-card-header" style="height:50px;margin-bottom:50px;">1</div>
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">1</p>
+						<p>1</p>
+					</div>
+					<div class="mui-card-footer">
+						<a class="mui-card-link">Like</a> 
+						<a class="mui-card-link">Read more</a>
+					</div>
+				</li>
+			</ul>-->
+		</div>
+    </div>
+    
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+		mui.init();
+			//储存一个全局变量地址
+      		var urlApi = 'http://www.wcode.me/wcode/';
+      		var urli = urlApi+'public/admin/article/appLst';
+      		localStorage.setItem('urlApI',urlApi);
+      		 
+      	(function ($) {
+ 
+      		$.ajax(urli,{
+      			type:"post",
+      			async:false,
+      			dataType:'json',
+      			headers:{'Content-Type':'application/json'},
+      			timeout:10000,
+      			success:succ,
+      			error:function (res){ 
+      				$.toast('失败'); 
+      			}
+      		}); 
+      		//成功时函数
+      		function succ(res){ 
+				res = JSON.parse(res);
+				$.toast('加载成功'); 
+				
+				var html = '';
+				for(var i = 0 ; i < res.length; i++){
+					html += '<ul id="titl" class="mui-table-view" style="margin-bottom:10px;">'
+					html +=	'	<li class="mui-table-view-cell" articleId="' + res[i].id + '">';
+					html +=	'		<div id="title1" class="mui-ellipsis" >标题 : '+ res[i].title +'</div>';
+					html += '		<div id="line" class="mui-card-content-inner">';
+					html +=	'			<p id="tex2" style="color: #333;">'+ res[i].content +'</p>';
+//					html +=	'			<p id="love">'+ res[i].love +'❤</p>';
+					html +=	'		</div>'				
+					html +=	'		<div class="fool">'
+					html +=	'			<a id="tim" class="mui-card-link ">发布于: '+ getLocalTime(res[i].publish_time) +'</a>'
+					html +=	'			<a id="amount" class="mui-card-link ">'+ res[i].love +'❤</a>'
+					html +=	'		</div>'
+					html +=	'	</li>' 
+					html += '</ul>'
+				}  
+				
+  				document.getElementById("box").innerHTML = html;
+  			} 
+  			//页面传值
+  			mui('#box').on('tap','li',function (){
+				var articleId = this.getAttribute('articleId');
+				mui.openWindow({ 
+					url:'html/content.html',
+					id:'content', 
+					extras:{
+						articleId: articleId
+					} 
+				})
+			})
+			
+			//时间戳转换函数
+			function getLocalTime(nS) {     
+				return new Date(parseInt(nS) * 1000).toLocaleString().substr(0,10);
+		   }
+      	})(mui)
+  	
+    </script>
+</body>
+</html>

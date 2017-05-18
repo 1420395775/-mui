@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link type="text/css" href="../css/app.css" />
+		<link rel="stylesheet" href="../css/Mycss.css" />
+		<style>
+			.mui-row.mui-fullscreen>[class*="mui-col-"] {
+				height: 100%;
+			}
+			.mui-col-xs-3,
+			.mui-col-xs-9 {
+				overflow-y: auto;
+				height: 100%;
+			}
+			.mui-segmented-control .mui-control-item {
+				line-height: 50px;
+				width: 100%;
+			}
+			.mui-control-content {
+				display: block;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				background-color: #fff;
+			}
+			.startContent{
+				height:51px;
+				font-size: 14px;
+				background: #fff;
+				padding: 5px 0 0 5px;
+				border-bottom:1px solid #E0DFE4;
+				position: relative;
+			}
+			#stTitle{
+				display: inline-block;
+				width: 80%;
+				word-break: break-all; 
+				text-overflow: ellipsis;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp:2;
+				-webkit-box-orient:vertical;
+			}
+			#amount{
+				position: absolute;
+				top:10px;
+				right: 10px;
+				font-size: 12px;
+				color: #DE694B;
+			}
+			.stLeft{
+				background: #ECF5FF;
+				/*color: #057DFF;*/
+			}
+			#head h1,#head a, #head #ff{
+				color: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header id="head" class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span id="ff">返回</span></a>
+		    <h1 class="mui-title">前端工程师必学</h1>
+		</header>
+		
+		<div class="mui-content mui-row mui-fullscreen">
+			<div class="mui-col-xs-3 stLeft">
+				<div id="segmentedControls" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+				</div>
+			</div>
+			<div id="segmentedControlContents" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;">
+				<!--<img src="" alt="aa" />--><!--<div id="startContent"  class="startContent">	 </div>-->
+			</div> 
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			
+			//左侧数据
+			(function ($){
+				var urlApi = localStorage.getItem('urlApI');
+				var urli = urlApi +'public/admin/coursecategory/appLst';
+				
+				mui.ajax(urli,{
+					type:'post',
+					async:'false',
+					headers:{'Content-Type':'application/json'},
+	      			timeout:10000,
+					dataType:'json',
+					success:succ,
+					error:function (res){
+						$.toast('失败')
+					}
+				})
+				
+				//成功执行的函数
+				function succ(res){
+					res  = JSON.parse(res);
+					var html = [];
+					
+					for (var i = 0; i < res.length; i++) {
+						
+						html.push('<a statyId="'+res[i].id+'" class="mui-control-item leftCourse">' + res[i].catename + '</a>');
+					}
+					document.getElementById("segmentedControls").innerHTML = html.join('');
+					document.getElementById("segmentedControls").querySelector('.mui-control-item').classList.add('mui-active');
+					//左侧栏全部完成后，执行下面函数，来调取右侧栏
+					toCourse();
+				}
+				
+				//左侧点事件，获取右侧数据
+				function toCourse() {
+					$('.leftCourse').each(function (){
+						this.addEventListener('tap',function (){
+							
+							var statyId = this.getAttribute('statyId');
+							var urlApi = localStorage.getItem('urlApI');
+							var urli = urlApi +'public/admin/course/appLst';
+
+							mui.ajax(urli,{
+								type:'post',
+								async:'false',
+								data:{'id':statyId},
+								headers:{'Content-Type':'application/json'},
+				      			timeout:1000,
+								dataType:'json', 
+								success:succ2,
+								error:function (res){
+									$.toast("数据加载失败");//错误执行方法   
+								}   
+							})
+							
+							//成功执行函数
+							function succ2(res){ 
+//								if(res){
+									res = JSON.parse(res);
+									var html = '';
+									
+									for(var j = 0; j < res.length; j++){
+										html +='<div  courseId="'+res[j].id+'" class="startContent">';
+										html +='	<span id="stTitle"> '+ res[j].title +'</span>'
+										html +='	<a id="amount" class="mui-card-link ">人气: '+ res[j].views +'</a>'
+										html +='</div>'
+									}
+									document.getElementById('segmentedControlContents').innerHTML = html;
+									toDetails ()
+//								}
+				
+								//获取点击的id，再传值
+								function toDetails () {
+						  			mui('#segmentedControlContents').on('tap','.startContent',function (){
+										var courseId = this.getAttribute('courseId');
+										mui.openWindow({ 
+											url: 'start-node.html',
+											id: 'start-node',
+											extras:{
+												courseId: courseId
+											} 
+										})
+									})
+					  			}
+												
+						}
+					})
+					
+					//自动触发，当进入页面时候，第一个也没有加载，需要自动触发点击事件
+					mui.trigger($(".leftCourse")[0],'tap');
+				})
+
+			}
+				
+				
+		})(mui)
+
+//			contentsElem.addEventListener('scroll', function() {
+//				var scrollTop = contentsElem.scrollTop;
+//				for (var i = 0; i < length; i++) {
+//					var offsetTop = contentTops[i];
+//					var offset = Math.abs(offsetTop - scrollTop);
+////						console.log("i:"+i+",scrollTop:"+scrollTop+",offsetTop:"+offsetTop+",offset:"+offset);
+//					if (scrollTop < offsetTop) {
+//						if (scrollTop >= maxScroll) {
+//							onScroll(length - 1);
+//						} else {
+//							onScroll(i - 1);
+//						}
+//						break;
+//					} else if (offset < 20) {
+//						onScroll(i);
+//						break;
+//					}else if(scrollTop >= maxScroll){
+//						onScroll(length - 1);
+//						break;
+//					}
+//				}
+//			});
+			
+			var lastIndex = 0;
+//				//监听content滚动
+			var onScroll = function(index) {
+				if (lastIndex !== index) {
+					lastIndex = index;
+					var lastActiveElem = controlsElem.querySelector('.mui-active');
+					lastActiveElem && (lastActiveElem.classList.remove('mui-active'));
+					var currentElem = controlsElem.querySelector('.mui-control-item:nth-child(' + (index + 1) + ')');
+					currentElem.classList.add('mui-active');
+					//简单处理左侧分类滚动，要么滚动到底，要么滚动到顶
+					var controlScrollTop = controlWrapperElem.scrollTop;
+					if (controlScrollTop + controlWrapperHeight < controlTops[index]) {
+						controlWrapperElem.scrollTop = controlMaxScroll;
+					} else if (controlScrollTop > controlTops[index] - controlHeight) {
+						controlWrapperElem.scrollTop = 0;
+					} 
+				}
+			};
+			//滚动到指定content
+//			var scrollTo = function(index) {
+//				contentsElem.scrollTop = contentTops[index];
+//			};
+//			mui(controlsElem).on('tap', '.mui-control-item', function(e) {
+//				scrollTo(this.getAttribute('data-index'));
+//				return false;
+//			});
+			 
+		</script>
+	</body>
+</html> 
+

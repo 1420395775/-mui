@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/Mycss.css" rel="stylesheet" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-card{
+				margin:0;
+			}
+			#content{
+				text-align：justify;
+				word-break: break-all; 
+				text-indent: 2em;
+			}
+			#author{
+				font-size: 12px;
+				margin-left: 20px;
+			}
+			#head h1,#head a,#head #ff{
+				color: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="head" class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span id="ff">返回</span></a>
+		    <h1 class="mui-title">内容详情</h1>
+		</header>
+		
+		<div class="mui-content">
+		   <div class="mui-card">
+				<div class="detailsTitle mui-ellipsis" id='datatitle'></div>
+				<div class="mui-card-content">
+					<div class="mui-card-content-inner">
+						<p id='content' style="color: #333;"></p>
+					</div>
+				</div>
+				<div class="mui-card-footer">
+					<a  id='top' style="color: #DE694B;" class="mui-card-link">上一篇</a>
+					<a  id='bottom' style="color: #DE694B;" class="mui-card-link">下一篇</a>
+				</div>
+			</div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			
+			mui.plusReady(function(){
+				//上一个页面传过来的ID
+				var self = plus.webview.currentWebview();
+				var courseId = self.courseId;
+				
+				(function ($){
+					var urlApi = localStorage.getItem('urlApI');
+					var urli = urlApi +'public/admin/course/appDetails'; 
+					
+					$.ajax(urli,{
+						type:"post",
+		      			async:false,
+		      			dataType:'json',
+		      			data:{'id': courseId},
+		      			headers:{'Content-Type':'application/json'},
+		      			timeout:10000,
+						success:succ,
+						error:function (res){
+							$.toast('失败')
+						}
+					})
+					
+					//接收成功函数
+					function succ(res){
+						res = JSON.parse(res);
+						$.toast('加载成功');
+						document.getElementById('datatitle').innerHTML = res[0].title;
+						document.getElementById('content').innerHTML = res[0].content;
+					}
+				})(mui)
+			})
+			
+		</script>
+	</body>
+</html>
